@@ -3,32 +3,33 @@
 # business domain you are modeling.
 
 require 'aasm'
+require 'stonepath/event_logging'
+require 'stonepath/dot'
 
 
 module StonePath
   module SPTask
-      
     def self.included(base)
       base.instance_eval do
         include AASM
-      
+        extend StonePath::EventLogging
+        extend StonePath::Dot
+
         # Tasks are now completely polymorphic between workbenches.
         # as long as an activerecord model declares itself as a workbench and declares itself
         # a workbench for the specific kind of task, everything just works.
         belongs_to :workbench, :polymorphic => true
-        
+
         # Tasks are now completely polymorphic between workitems.
         # as long as an activerecord model declares itself as a workitem and declares itself
         # a workitem for the specific kind of task, everything just works.
         belongs_to :workitem, :polymorphic => true
-        
-        #add the ability to log events if the user so specifies
-        require File.expand_path(File.dirname(__FILE__)) + "/event_logging.rb"
-        extend StonePath::EventLogging
-        
-        require File.expand_path(File.dirname(__FILE__)) + "/dot.rb"
-        extend StonePath::Dot
-        
+
+        def state_machine(options={}, &block)
+          aasm_options = {:whiny_transitions => false}
+          aasm_options.update(options)
+          aasm(aasm_options, &block)
+        end
       end
     end
     

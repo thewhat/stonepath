@@ -1,6 +1,10 @@
 $:.unshift(File.dirname(__FILE__)) unless
   $:.include?(File.dirname(__FILE__)) || $:.include?(File.expand_path(File.dirname(__FILE__)))
 
+require 'stonepath/task'
+require 'stonepath/work_item'
+
+
 module StonePath
   require 'stonepath/railtie' if defined?(Rails)
   
@@ -8,18 +12,6 @@ module StonePath
   def self.included(base)
   
     base.instance_eval {
-  
-      def stonepath_workitem(&block)
-        require File.expand_path(File.dirname(__FILE__)) + "/stonepath/work_item.rb"
-        include StonePath::WorkItem
-        aasm whiny_transitions: false, &block
-      end
-
-      def stonepath_task(&block)
-        require File.expand_path(File.dirname(__FILE__)) + "/stonepath/task.rb"
-        include StonePath::SPTask
-        aasm whiny_transitions: false, &block
-      end
 
       def stonepath_workbench
         require File.expand_path(File.dirname(__FILE__)) + "/stonepath/work_bench.rb"
