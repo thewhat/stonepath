@@ -30,6 +30,4 @@ class <%= class_name %> < ActiveRecord::Base
   
   end
   
-  attr_accessible <%= attributes.map { |a| ":#{a.name}" }.join(", ") %>
-  
 end
