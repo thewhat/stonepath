@@ -2,6 +2,9 @@
 # is the subject of ownership and tasks.  Tis is the place the primaey state machine will
 # exist
 
+require 'aasm'
+
+
 module StonePath
   module WorkItem
     def self.included(base)

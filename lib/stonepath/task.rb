@@ -2,6 +2,9 @@
 # some default workflow, and should be extended with whatever attributes make sense for the
 # business domain you are modeling.
 
+require 'aasm'
+
+
 module StonePath
   module SPTask
       
