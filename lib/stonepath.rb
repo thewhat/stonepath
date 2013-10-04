@@ -2,29 +2,13 @@ $:.unshift(File.dirname(__FILE__)) unless
   $:.include?(File.dirname(__FILE__)) || $:.include?(File.expand_path(File.dirname(__FILE__)))
 
 require 'stonepath/task'
+require 'stonepath/work_bench'
 require 'stonepath/work_item'
+require 'stonepath/work_owner'
 
 
 module StonePath
   require 'stonepath/railtie' if defined?(Rails)
-  
-  # main hook into the framework.  From here, this should simply have methods that cause other includes to happen.
-  def self.included(base)
-  
-    base.instance_eval {
-
-      def stonepath_workbench
-        require File.expand_path(File.dirname(__FILE__)) + "/stonepath/work_bench.rb"
-        include StonePath::WorkBench
-      end
-
-      def stonepath_workowner
-        require File.expand_path(File.dirname(__FILE__)) + "/stonepath/work_owner.rb"
-        include StonePath::WorkOwner
-      end
-    }
-  end
-  
 end
 
 require 'rubygems'
