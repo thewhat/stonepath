@@ -9,23 +9,23 @@ module StonePath
   
     base.instance_eval {
   
-      def stonepath_workitem(&config_block)
+      def stonepath_workitem(&block)
         require File.expand_path(File.dirname(__FILE__)) + "/stonepath/work_item.rb"
         include StonePath::WorkItem
-        instance_eval &config_block if config_block
+        aasm whiny_transitions: false, &block
       end
-    
-      def stonepath_task(&config_block)
+
+      def stonepath_task(&block)
         require File.expand_path(File.dirname(__FILE__)) + "/stonepath/task.rb"
         include StonePath::SPTask
-        instance_eval &config_block if config_block
+        aasm whiny_transitions: false, &block
       end
-    
+
       def stonepath_workbench
         require File.expand_path(File.dirname(__FILE__)) + "/stonepath/work_bench.rb"
         include StonePath::WorkBench
       end
-      
+
       def stonepath_workowner
         require File.expand_path(File.dirname(__FILE__)) + "/stonepath/work_owner.rb"
         include StonePath::WorkOwner
