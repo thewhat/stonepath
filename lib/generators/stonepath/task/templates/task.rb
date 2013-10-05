@@ -23,15 +23,15 @@ class <%= class_name %> < ActiveRecord::Base
     state :cancelled, after_enter: :notify_closed
 
     event :complete do
-      transitions to: :completed, from: :active
+      transitions from: :active, to: :completed
     end
 
     event :cancel do
-      transitions to: :cancelled, from: [:active, :completed]
+      transitions from: [:active, :completed], to: :cancelled
     end
 
     event :expire do
-      transitions to: :expired, from: :active
+      transitions from: :active, to: :expired
     end
   end
 

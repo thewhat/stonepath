@@ -15,15 +15,15 @@ class <%= class_name %> < ActiveRecord::Base
     state :completed
 
     event :activate do
-      transitions to: :in_process, from: :pending
+      transitions from: :pending, to: :in_process
     end
 
     event :complete do
-      transitions to: :completed, from: :in_process
+      transitions from: :in_process, to: :completed
     end
 
     event :reactivate do
-      transitions to: :in_process, from: :completed
+      transitions from: :completed, to: :in_process
     end
   end
 
