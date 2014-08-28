@@ -2,28 +2,34 @@
 # is the subject of ownership and tasks.  Tis is the place the primaey state machine will
 # exist
 
+require 'aasm'
+require 'stonepath/event_logging'
+require 'stonepath/dot'
+
+
 module StonePath
   module WorkItem
     def self.included(base)
       base.instance_eval do
         include AASM
-        
-        require File.expand_path(File.dirname(__FILE__)) + "/event_logging.rb"
         extend StonePath::EventLogging
-        
-        require File.expand_path(File.dirname(__FILE__)) + "/dot.rb"
         extend StonePath::Dot
-        
+
         def owned_by(owner, options={})
           options.merge!(:class_name => owner.to_s.classify)
           belongs_to :owner, options
         end
-        
+
         def tasked_through(tasks, options={})
           options.merge!(:as => :workitem)
           has_many tasks, options
         end
-        
+
+        def state_machine(options={}, &block)
+          aasm_options = {:whiny_transitions => false}
+          aasm_options.update(options)
+          aasm(aasm_options, &block)
+        end
       end #base.instance_eval
       
       # modifies to_xml do that it includes all the possible events from this state.
